@@ -11,7 +11,7 @@ from MainWindow import MainWindow
 def main():
     app = QApplication(sys.argv)
 
-    app.setStyle('Fusion')
+    app.setStyle("Fusion")
 
     window = MainWindow()
     window.show()
