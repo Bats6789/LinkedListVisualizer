@@ -34,6 +34,8 @@ class MainWindow(QMainWindow):
         self.node2.setFlag(QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, True)
         self.scene.addItem(self.node2)
 
+        self.node1.next = self.node2
+
         self.button = QPushButton()
 
         self.widget = QWidget()
