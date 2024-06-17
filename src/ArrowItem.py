@@ -6,6 +6,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import QPointF, QRectF
 from PyQt6.QtGui import QPolygonF, QBrush, QPainter, QTransform
+from PyQt6.QtGui import QPen
 from math import sqrt, atan2, degrees
 
 pointF = QPointF | tuple[float, float]
@@ -37,6 +38,7 @@ class ArrowItem(QGraphicsItem):
 
     def setBrush(self, brush: QBrush):
         self.item.setBrush(brush)
+        self.item.setPen(QPen(brush.color()))
 
     def paint(self, paint: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget):
         self.item.paint(paint, option, widget)

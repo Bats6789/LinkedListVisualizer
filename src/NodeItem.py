@@ -48,6 +48,7 @@ class NodeItem(QGraphicsRectItem):
                         dy = rect.bottom() - selfRect.top() + 1
                     elif rect.bottom() >= selfRect.bottom() >= rect.top():
                         dy = rect.top() - selfRect.bottom() - 1
+
                     if dx < dy:
                         pos.setX(pos.x() + dx)
                     else:
@@ -72,12 +73,14 @@ class NodeItem(QGraphicsRectItem):
             if self.startArrow is not None:
                 pos = self.pos()
                 pos.setX(pos.x() + self.rect().width())
+                pos.setY(pos.y() + self.rect().height() / 2)
                 self.startArrow.start = pos
                 self.startArrow.transformArrow()
 
             if self.stopArrow is not None:
                 pos = self.pos()
                 self.stopArrow.stop = pos
+                pos.setY(pos.y() + self.rect().height() / 2)
                 self.stopArrow.transformArrow()
 
             cursor.setPos(mousePos)
@@ -98,3 +101,25 @@ class NodeItem(QGraphicsRectItem):
     @next.setter
     def next(self, value):
         self._next = value
+
+    @property
+    def startArrow(self):
+        """The startArrow property."""
+        return self._startArrow
+
+    @startArrow.setter
+    def startArrow(self, value):
+        self._startArrow = value
+        if value is not None:
+            value.transformArrow()
+
+    @property
+    def stopArrow(self):
+        """The stopArrow property."""
+        return self._stopArrow
+
+    @stopArrow.setter
+    def stopArrow(self, value):
+        self._stopArrow = value
+        if value is not None:
+            value.transformArrow()

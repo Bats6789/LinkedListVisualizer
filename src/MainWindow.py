@@ -31,7 +31,7 @@ class MainWindow(QMainWindow):
 
         brush.setColor(Qt.GlobalColor.blue)
         self.node2 = NodeItem(0, 0, 120, 100)
-        self.node2.setPos(130, 0)
+        self.node2.setPos(230, 0)
         self.node2.setBrush(brush)
         self.node2.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable, True)
         self.node2.setFlag(
@@ -39,8 +39,15 @@ class MainWindow(QMainWindow):
         )
         self.scene.addItem(self.node2)
 
-        brush.setColor(Qt.GlobalColor.yellow)
-        self.arrow = ArrowItem((300, 300), (400, 300))
+        start = self.node1.pos()
+        stop = self.node2.pos()
+
+        start.setX(start.x() + self.node1.rect().width())
+        start.setY(start.y() + self.node1.rect().height() / 2)
+        stop.setY(stop.y() + self.node2.rect().height() / 2)
+
+        brush.setColor(Qt.GlobalColor.red)
+        self.arrow = ArrowItem(start, stop)
         self.arrow.setBrush(brush)
         self.scene.addItem(self.arrow)
 
