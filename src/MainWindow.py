@@ -3,6 +3,7 @@ from PyQt6.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsItem
 from PyQt6.QtGui import QKeyEvent, QBrush
 from PyQt6.QtCore import Qt
 from NodeItem import NodeItem
+from ArrowItem import ArrowItem
 
 
 class MainWindow(QMainWindow):
@@ -23,7 +24,9 @@ class MainWindow(QMainWindow):
         self.node1 = NodeItem(0, 0, 120, 100)
         self.node1.setBrush(brush)
         self.node1.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable, True)
-        self.node1.setFlag(QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, True)
+        self.node1.setFlag(
+            QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, True
+        )
         self.scene.addItem(self.node1)
 
         brush.setColor(Qt.GlobalColor.blue)
@@ -31,10 +34,19 @@ class MainWindow(QMainWindow):
         self.node2.setPos(130, 0)
         self.node2.setBrush(brush)
         self.node2.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable, True)
-        self.node2.setFlag(QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, True)
+        self.node2.setFlag(
+            QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, True
+        )
         self.scene.addItem(self.node2)
 
+        brush.setColor(Qt.GlobalColor.yellow)
+        self.arrow = ArrowItem((300, 300), (400, 300))
+        self.arrow.setBrush(brush)
+        self.scene.addItem(self.arrow)
+
         self.node1.next = self.node2
+        self.node1.startArrow = self.arrow
+        self.node2.stopArrow = self.arrow
 
         self.button = QPushButton()
 

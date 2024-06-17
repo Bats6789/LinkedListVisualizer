@@ -1,7 +1,6 @@
-from PyQt6.QtWidgets import QGraphicsRectItem, QGraphicsItem, QGraphicsSceneMouseEvent, QWidget
-from PyQt6.QtWidgets import QStyleOptionGraphicsItem
+from PyQt6.QtWidgets import QGraphicsRectItem, QGraphicsItem, QGraphicsSceneMouseEvent
 from PyQt6.QtCore import QVariant
-from PyQt6.QtGui import QCursor, QPainter, QPen
+from PyQt6.QtGui import QCursor
 
 changeType = QGraphicsItem.GraphicsItemChange
 
@@ -14,6 +13,8 @@ class NodeItem(QGraphicsRectItem):
 
         self._mouseDX = 0
         self._mouseDY = 0
+        self.startArrow = None
+        self.stopArrow = None
 
     def itemChange(self, change: QGraphicsItem.GraphicsItemChange, value: QVariant):
         # Boundary
@@ -28,7 +29,9 @@ class NodeItem(QGraphicsRectItem):
                 newPos.setY(min(rect.bottom(), max(newPos.y(), rect.top())))
 
             # Collision
-            collisions = self.collidingItems()
+            collisions = list(
+                filter(lambda item: type(item) == type(self), self.collidingItems())
+            )
             if len(collisions) > 0:
                 for item in collisions:
                     rect = item.mapRectToScene(item.rect())
@@ -66,9 +69,19 @@ class NodeItem(QGraphicsRectItem):
             if abs(globalPos.y() + self._mouseDY - mousePos.y()) > 1:
                 mousePos.setY(globalPos.y() + self._mouseDY)
 
+            if self.startArrow is not None:
+                pos = self.pos()
+                pos.setX(pos.x() + self.rect().width())
+                self.startArrow.start = pos
+                self.startArrow.transformArrow()
+
+            if self.stopArrow is not None:
+                pos = self.pos()
+                self.stopArrow.stop = pos
+                self.stopArrow.transformArrow()
+
             cursor.setPos(mousePos)
             value = newPos
-            self.update(self.scene().sceneRect())
 
         return super().itemChange(change, value)
 
@@ -76,20 +89,6 @@ class NodeItem(QGraphicsRectItem):
         self._mouseDX = int(e.pos().x())
         self._mouseDY = int(e.pos().y())
         super().mousePressEvent(e)
-
-    def paint(self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget):
-
-        if self.next is not None:
-            pen = painter.pen()
-            tmpPen = QPen()
-            tmpPen.setBrush(self.brush())
-            tmpPen.setWidth(4)
-            painter.setPen(tmpPen)
-            painter.drawLine(self.pos(), self.next.pos())
-            print('draw')
-            painter.setPen(pen)
-
-        super().paint(painter, option, widget)
 
     @property
     def next(self):
