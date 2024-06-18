@@ -26,48 +26,36 @@ def closestPoint(start: QPointF, rect: QRectF) -> QPointF:
     stop.setX(point.x())
     stop.setY(point.y())
     minDist = distance(start, point)
-    print(f'Top ({point.x()}, {point.y()})')
-    print(f'Stop ({stop.x()}, {stop.y()})')
-    print(f'Dist {minDist}')
 
     # Left point
     point.setX(rect.x())
     point.setY(rect.y() + rect.height() / 2)
-    print(f'Left ({point.x()}, {point.y()})')
 
     tmp = distance(start, point)
     if minDist > tmp:
         minDist = tmp
         stop.setX(point.x())
         stop.setY(point.y())
-        print(f'Stop ({stop.x()}, {stop.y()})')
-        print(f'Dist {tmp}')
 
     # right point
     point.setX(rect.x() + rect.width())
     point.setY(rect.y() + rect.height() / 2)
-    print(f'Right ({point.x()}, {point.y()})')
 
     tmp = distance(start, point)
     if minDist > tmp:
         minDist = tmp
         stop.setX(point.x())
         stop.setY(point.y())
-        print(f'Stop ({stop.x()}, {stop.y()})')
-        print(f'Dist {tmp}')
 
     # bottom point
     point.setX(rect.x() + rect.width() / 2)
     point.setY(rect.y() + rect.height())
-    print(f'Bottom ({point.x()}, {point.y()})')
 
     tmp = distance(start, point)
     if minDist > tmp:
         minDist = tmp
         stop.setX(point.x())
         stop.setY(point.y())
-        print(f'Stop ({stop.x()}, {stop.y()})')
-        print(f'Dist {tmp}')
 
     return stop
 
@@ -97,7 +85,7 @@ class NodeItem(QGraphicsRectItem):
 
             # Collision
             collisions = list(
-                filter(lambda item: type(item) == type(self), self.collidingItems())
+                filter(lambda item: type(item) is type(self), self.collidingItems())
             )
             if len(collisions) > 0:
                 for item in collisions:
